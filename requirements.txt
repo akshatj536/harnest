@@ -1,0 +1,7 @@
+openai
+groq
+python-dotenv
+
+# Optional: enables the browser tools. After installing, run:
+#   playwright install chromium
+playwright
