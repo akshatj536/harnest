@@ -3,6 +3,7 @@
 
 # Agent state -- lives in the project being worked on, never here
 PROGRESS.md
+DECISIONS.md
 
 # Python
 __pycache__/

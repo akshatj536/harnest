@@ -1,6 +1,7 @@
 openai
 groq
 python-dotenv
+rich
 
 # Optional: enables the browser tools. After installing, run:
 #   playwright install chromium

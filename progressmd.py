@@ -1,7 +1,8 @@
 """Persistent task state for the agent, stored in PROGRESS.md.
 
 PROGRESS.md is STATE, not instructions: it records what has been done and what
-is left, so work survives across sessions. Project conventions stay in CLAUDE.md.
+is left, so work survives across sessions. Project conventions stay in AGENTS.md,
+and the reasons behind decisions go in DECISIONS.md (see compaction.py).
 """
 
 from pathlib import Path
@@ -22,8 +23,6 @@ TEMPLATE = """# Current Task
 (not started)
 
 # Important Discoveries
-
-# Decisions
 
 # Blocked
 """
