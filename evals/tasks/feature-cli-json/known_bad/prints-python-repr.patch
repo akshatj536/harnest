@@ -1,0 +1,60 @@
+diff --git a/bookshelf/cli.py b/bookshelf/cli.py
+index 7b0da64..eb77678 100644
+--- a/bookshelf/cli.py
++++ b/bookshelf/cli.py
+@@ -27,12 +27,14 @@ def build_parser() -> argparse.ArgumentParser:
+     p.add_argument("--page", type=int, default=1, help="page number, starting at 1")
+     p.add_argument("--per-page", type=int, default=DEFAULT_PER_PAGE,
+                    help=f"books per page (default {DEFAULT_PER_PAGE})")
++    p.add_argument("--json", action="store_true", help="print the books as a JSON array")
+ 
+     p = sub.add_parser("search", help="find books")
+     p.add_argument("--title", help="part of the title, any case")
+     p.add_argument("--author", help="part of the author's name, any case")
+     p.add_argument("--year-from", type=int, help="published in or after this year")
+     p.add_argument("--year-to", type=int, help="published in or before this year")
++    p.add_argument("--json", action="store_true", help="print the books as a JSON array")
+ 
+     p = sub.add_parser("checkout", help="lend a book")
+     p.add_argument("book_id", type=int)
+@@ -59,13 +61,16 @@ def main(argv: list[str] | None = None) -> int:
+ 
+         elif args.command == "list":
+             books = paginate(catalog.books, args.page, args.per_page)
+-            print(formatting.book_table(books))
+-            print(f"Page {args.page} of {page_count(len(catalog), args.per_page)}")
++            if args.json:
++                print(formatting.books_json(books))
++            else:
++                print(formatting.book_table(books))
++                print(f"Page {args.page} of {page_count(len(catalog), args.per_page)}")
+ 
+         elif args.command == "search":
+             found = search(catalog.books, title=args.title, author=args.author,
+                            year_from=args.year_from, year_to=args.year_to)
+-            print(formatting.book_table(found))
++            print(formatting.books_json(found) if args.json else formatting.book_table(found))
+ 
+         elif args.command == "checkout":
+             loan = loans.checkout(catalog, args.book_id, args.borrower, today)
+diff --git a/bookshelf/formatting.py b/bookshelf/formatting.py
+index 3c9fc1e..4a93c7e 100644
+--- a/bookshelf/formatting.py
++++ b/bookshelf/formatting.py
+@@ -1,5 +1,7 @@
+ """How books and money are shown in the terminal."""
+ 
++import json
++
+ 
+ def book_line(book) -> str:
+     line = f"{book.id:>3}  {book.title}  ({book.author}, {book.year})"
+@@ -15,3 +17,8 @@ def book_table(books) -> str:
+ 
+ def money(cents: int) -> str:
+     return f"${cents // 100}.{cents % 100:02d}"
++
++
++def books_json(books) -> str:
++    """The books as a JSON array of {title, author, year} objects."""
++    return str([{"title": b.title, "author": b.author, "year": b.year} for b in books])

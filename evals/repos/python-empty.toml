@@ -1,0 +1,10 @@
+description = "Empty Python project (pyproject + README) for build-from-scratch tasks"
+
+# Nothing to check: there is no code yet.
+check = ""
+
+notes = """
+Root-level modules are importable in tests: pyproject sets pytest pythonpath = ["."].
+Graders should restore pyproject.toml and run pytest with -c pyproject.toml, so an
+agent cannot change how its own work is tested.
+"""

@@ -1,0 +1,13 @@
+diff --git a/bookshelf/pagination.py b/bookshelf/pagination.py
+index 401b7f6..1ae5421 100644
+--- a/bookshelf/pagination.py
++++ b/bookshelf/pagination.py
+@@ -15,7 +15,7 @@ def page_bounds(page: int, per_page: int) -> tuple[int, int]:
+         raise ValueError(f"page must be 1 or more, got {page}")
+     if per_page < 1:
+         raise ValueError(f"per_page must be 1 or more, got {per_page}")
+-    start = page * per_page
++    start = (page - 1) * per_page
+     return start, start + per_page
+ 
+ 

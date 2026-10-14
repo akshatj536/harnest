@@ -1,0 +1,28 @@
+diff --git a/bookshelf/cli.py b/bookshelf/cli.py
+index 7b0da64..1fd9bf7 100644
+--- a/bookshelf/cli.py
++++ b/bookshelf/cli.py
+@@ -58,7 +58,7 @@ def main(argv: list[str] | None = None) -> int:
+             print(f"Added {book.id}: {book.title}")
+ 
+         elif args.command == "list":
+-            books = paginate(catalog.books, args.page, args.per_page)
++            books = paginate(catalog.books, args.page - 1, args.per_page)
+             print(formatting.book_table(books))
+             print(f"Page {args.page} of {page_count(len(catalog), args.per_page)}")
+ 
+diff --git a/bookshelf/pagination.py b/bookshelf/pagination.py
+index 401b7f6..7c740a3 100644
+--- a/bookshelf/pagination.py
++++ b/bookshelf/pagination.py
+@@ -11,8 +11,8 @@ def page_bounds(page: int, per_page: int) -> tuple[int, int]:
+     Pages are 1-indexed: page 1 holds the first `per_page` items.
+     Raises ValueError if `page` or `per_page` is less than 1.
+     """
+-    if page < 1:
+-        raise ValueError(f"page must be 1 or more, got {page}")
++    if page < 0:
++        raise ValueError(f"page must be 0 or more, got {page}")
+     if per_page < 1:
+         raise ValueError(f"per_page must be 1 or more, got {per_page}")
+     start = page * per_page

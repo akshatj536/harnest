@@ -3,6 +3,9 @@ groq
 python-dotenv
 rich
 
+# For the evals (python -m evals) and the tasks' tests
+pytest
+
 # Optional: enables the browser tools. After installing, run:
 #   playwright install chromium
 playwright

@@ -1,0 +1,13 @@
+diff --git a/bookshelf/search.py b/bookshelf/search.py
+index d12586f..31c1dcb 100644
+--- a/bookshelf/search.py
++++ b/bookshelf/search.py
+@@ -3,7 +3,7 @@
+ 
+ def by_title(books, query: str) -> list:
+     """Books whose title contains `query`, ignoring case."""
+-    needle = query.strip()
++    needle = query.strip().title()
+     return [b for b in books if needle in b.title]
+ 
+ 

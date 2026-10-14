@@ -1,0 +1,53 @@
+id = "debug-failing-test"
+category = "debug"
+difficulty = "easy"
+description = "Make a red CI run green from the pasted test output, by fixing the code rather than the test."
+repo = "bookshelf"
+# Breaks case-insensitive title search, so one existing test fails.
+setup_patch = "setup.patch"
+prompt = "prompt.md"
+timeout_seconds = 900
+
+# PASS = the failing test passes when run exactly as written, the whole suite
+# passes, the fix also works for other casings (hidden), no test was changed,
+# and no peeking.
+
+[[graders]]
+id = "failing-test-fixed"
+type = "command"
+role = "outcome"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml tests/test_search.py::test_title_search_ignores_case"
+restore = ["tests", "pyproject.toml"]
+
+[[graders]]
+id = "full-suite"
+type = "command"
+role = "outcome"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml tests"
+restore = ["tests", "pyproject.toml"]
+
+[[graders]]
+id = "fix-generalizes"
+type = "command"
+role = "outcome"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml hidden_tests"
+overlay = "hidden_tests"
+restore = ["pyproject.toml"]
+
+[[graders]]
+id = "tests-untouched"
+type = "files_unchanged"
+role = "guard"
+paths = ["tests/*", "pyproject.toml"]
+
+[[graders]]
+id = "no-peeking"
+type = "no_peeking"
+role = "guard"
+
+[[graders]]
+id = "stays-in-scope"
+type = "diff_scope"
+role = "guard"
+gating = false
+allowed = ["bookshelf/*", "tests/*"]

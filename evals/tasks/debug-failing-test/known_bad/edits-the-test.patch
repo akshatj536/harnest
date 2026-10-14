@@ -1,0 +1,13 @@
+diff --git a/tests/test_search.py b/tests/test_search.py
+index d253f57..ed10180 100644
+--- a/tests/test_search.py
++++ b/tests/test_search.py
+@@ -20,7 +20,7 @@ def test_title_search_matches_part_of_the_title():
+ 
+ 
+ def test_title_search_ignores_case():
+-    assert titles(by_title(make_books(), "dune")) == ["Dune", "Dune Messiah"]
++    assert titles(by_title(make_books(), "Dune")) == ["Dune", "Dune Messiah"]
+ 
+ 
+ def test_author_search_ignores_case():

@@ -1,0 +1,43 @@
+id = "feature-cli-json"
+category = "feature"
+difficulty = "easy"
+description = "Add a --json output mode to two commands of an existing CLI without changing its normal output."
+repo = "bookshelf"
+prompt = "prompt.md"
+timeout_seconds = 900
+
+# PASS = the hidden --json tests pass, the original tests still pass when run
+# exactly as they were, no existing test was changed, and no peeking.
+
+[[graders]]
+id = "json-output"
+type = "command"
+role = "outcome"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml hidden_tests"
+overlay = "hidden_tests"
+restore = ["pyproject.toml"]
+
+[[graders]]
+id = "no-regressions"
+type = "command"
+role = "guard"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml tests"
+restore = ["tests", "pyproject.toml"]
+
+[[graders]]
+id = "tests-untouched"
+type = "files_unchanged"
+role = "guard"
+paths = ["tests/*", "pyproject.toml"]
+
+[[graders]]
+id = "no-peeking"
+type = "no_peeking"
+role = "guard"
+
+[[graders]]
+id = "stays-in-scope"
+type = "diff_scope"
+role = "guard"
+gating = false
+allowed = ["bookshelf/*", "tests/*", "README.md"]

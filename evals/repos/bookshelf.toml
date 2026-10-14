@@ -1,0 +1,30 @@
+description = "Library catalog with a CLI: books, search, paging, loans and overdue charges (about 400 lines, full test suite)"
+
+check = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml"
+
+# Reuse seams for task authors. This file is never copied into a workspace.
+notes = """
+Bug sites (inject with a task's setup.patch):
+  - pagination.page_bounds: start = (page - 1) * per_page       [used by debug-pagination-offset]
+  - search.by_title: the two .lower() calls                      [used by debug-failing-test]
+  - search.by_year: the inclusive bounds (>= / <=)               [unused]
+  - policies.overdue_charge: the cap (min)                       [unused]
+
+Missing features (already absent, no setup needed):
+  - --json output for list/search                                [used by feature-cli-json]
+  - sorting (--sort title|author|year) for list/search           [unused]
+  - a `remove` CLI command (Catalog.remove exists)               [unused]
+
+Dead files (nothing imports or runs them):
+  - bookshelf/legacy_utils.py
+  - scripts/old_migrate.py
+
+Facts for question tasks:
+  - the late-return charge is computed by bookshelf.policies.overdue_charge,
+    called from bookshelf.loans.return_book; the CLI prints it as "Late fee"  [used by navigate-overdue-charge]
+  - default page size: 10 (pagination.DEFAULT_PER_PAGE)
+  - loan length: 14 days (policies.LOAN_DAYS)
+
+Tests import from the repo root (pytest pythonpath = ["."]). Graders should
+restore tests/ and pyproject.toml and run pytest with -c pyproject.toml.
+"""

@@ -1,0 +1,45 @@
+id = "debug-pagination-offset"
+category = "debug"
+difficulty = "easy"
+description = "Find and fix a bug from a user's report. The cause is in a different module from where it shows up."
+repo = "bookshelf"
+# Injects the bug (page * per_page) and removes the tests that would have caught it.
+setup_patch = "setup.patch"
+prompt = "prompt.md"
+timeout_seconds = 900
+
+# PASS = the hidden paging tests pass (including "page 0 is still rejected"),
+# the original tests still pass, no existing test was changed, and no peeking.
+
+[[graders]]
+id = "fixes-bug"
+type = "command"
+role = "outcome"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml hidden_tests"
+overlay = "hidden_tests"
+restore = ["pyproject.toml"]
+
+[[graders]]
+id = "no-regressions"
+type = "command"
+role = "guard"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml tests"
+restore = ["tests", "pyproject.toml"]
+
+[[graders]]
+id = "tests-untouched"
+type = "files_unchanged"
+role = "guard"
+paths = ["tests/*", "pyproject.toml"]
+
+[[graders]]
+id = "no-peeking"
+type = "no_peeking"
+role = "guard"
+
+[[graders]]
+id = "stays-in-scope"
+type = "diff_scope"
+role = "guard"
+gating = false
+allowed = ["bookshelf/*", "tests/*"]

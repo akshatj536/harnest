@@ -1,0 +1,29 @@
+id = "scratch-roman-numerals"
+category = "build"
+difficulty = "easy"
+description = "Write a small, fully specified module in an empty project."
+repo = "python-empty"
+prompt = "prompt.md"
+timeout_seconds = 900
+
+# PASS = the hidden spec tests pass, and the agent stayed out of eval files.
+
+[[graders]]
+id = "meets-spec"
+type = "command"
+role = "outcome"
+cmd = "python -I -m pytest -q -p no:cacheprovider --noconftest -c pyproject.toml hidden_tests"
+overlay = "hidden_tests"
+restore = ["pyproject.toml"]
+
+[[graders]]
+id = "no-peeking"
+type = "no_peeking"
+role = "guard"
+
+[[graders]]
+id = "stays-in-scope"
+type = "diff_scope"
+role = "guard"
+gating = false
+allowed = ["roman.py", "test_*.py", "tests/*", "README.md"]

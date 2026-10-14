@@ -17,3 +17,7 @@ venv/
 # Logs and screenshots the agent may leave behind
 *.log
 *.png
+
+# Eval results, and local notes on tasks still to build
+evals/runs/
+evals/TASK_IDEAS.md

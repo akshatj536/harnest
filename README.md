@@ -106,6 +106,25 @@ The summary and the decisions are both put back into the new context. That way, 
 
 So each call reuses everything but the newest messages. Compaction is the only thing that resets the cache. The `cached` figure in the token lines shows how much was served from cache.
 
+## Evals
+
+`evals/` measures whether a change to harnest makes it better or worse. It runs the agent on fixed coding tasks:
+- build a module from scratch
+- add a CLI feature
+- fix a bug from a report
+- fix a failing test
+- answer a question about a repo
+
+Each task runs several times, each time in a clean, identical workspace. The final state is graded with deterministic checks, and every trial's pass/fail, tokens and time are recorded.
+
+```bash
+python -m evals validate          # check every task and grader, no model calls
+python -m evals run --trials 3    # run harnest on every task
+python -m evals show <run-id>     # summary: pass rate, pass^k, tokens, time
+```
+
+The agent is never told it is being evaluated, and the tests that grade it are not in its workspace. See [evals/README.md](evals/README.md) for how it works and how to add tasks and graders.
+
 ## Configuration
 
 Edit the top of `agent.py`:

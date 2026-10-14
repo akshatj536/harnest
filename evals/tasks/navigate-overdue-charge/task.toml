@@ -1,0 +1,37 @@
+id = "navigate-overdue-charge"
+category = "navigate"
+difficulty = "easy"
+description = "Answer a question about where something happens in the code, without changing anything."
+repo = "bookshelf"
+prompt = "prompt.md"
+timeout_seconds = 600
+
+# PASS = ANSWER.txt holds exactly the right dotted path, no project file was
+# changed or added, and no peeking. The function is named overdue_charge, so a
+# search for "late" or "fee" leads to the CLI and has to be traced from there.
+
+[[graders]]
+id = "correct-answer"
+type = "file_equals"
+role = "outcome"
+path = "ANSWER.txt"
+expected = "bookshelf.policies.overdue_charge"
+
+[[graders]]
+id = "code-untouched"
+type = "files_unchanged"
+role = "guard"
+paths = ["bookshelf/*", "tests/*", "scripts/*", "pyproject.toml", "README.md", ".gitignore"]
+allow_new = false
+
+[[graders]]
+id = "no-peeking"
+type = "no_peeking"
+role = "guard"
+
+[[graders]]
+id = "stays-in-scope"
+type = "diff_scope"
+role = "guard"
+gating = false
+allowed = ["ANSWER.txt"]

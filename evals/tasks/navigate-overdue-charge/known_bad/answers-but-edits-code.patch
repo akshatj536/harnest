@@ -1,0 +1,19 @@
+diff --git a/ANSWER.txt b/ANSWER.txt
+new file mode 100644
+index 0000000..1c0a73b
+--- /dev/null
++++ b/ANSWER.txt
+@@ -0,0 +1 @@
++bookshelf.policies.overdue_charge
+diff --git a/bookshelf/policies.py b/bookshelf/policies.py
+index 9b21c86..6055e81 100644
+--- a/bookshelf/policies.py
++++ b/bookshelf/policies.py
+@@ -12,6 +12,7 @@ def due_date(checked_out: date) -> date:
+     return checked_out + timedelta(days=LOAN_DAYS)
+ 
+ 
++# The late-return fee is computed here.
+ def overdue_charge(days_overdue: int) -> int:
+     """Cents owed for a book that comes back `days_overdue` days after its due date.
+ 

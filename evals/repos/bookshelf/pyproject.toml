@@ -1,0 +1,9 @@
+[project]
+name = "bookshelf"
+version = "1.2.0"
+description = "A small library catalog with a command line"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
